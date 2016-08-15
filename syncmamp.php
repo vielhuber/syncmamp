@@ -79,4 +79,3 @@ if ($argv[1] == "restore")
 {
 	SyncMAMP::restore($argv[2]);
 }
-
