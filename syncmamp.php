@@ -56,7 +56,7 @@ class SyncMAMP
 		shell_exec("unzip \"" . $config->target . "/" . $project . ".zip\" -d " . $config->source . "/" . $project . "/");
 		if (file_exists($config->target . "/" . $project . ".mysql"))
 		{
-			shell_exec("\"" . (isset($config->mysql->mysql) ? ($config->mysql->mysql) : ("mysql")) . "\" -h " . $config->mysql->host . " --port " . $config->mysql->port . " -u " . $config->mysql->username . " -p\"" . $config->mysql->password . "\" -e \"drop database if exists " . $project . "; create database " . $project . ";\"");
+			shell_exec("\"" . (isset($config->mysql->mysql) ? ($config->mysql->mysql) : ("mysql")) . "\" -h " . $config->mysql->host . " --port " . $config->mysql->port . " -u " . $config->mysql->username . " -p\"" . $config->mysql->password . "\" -e \"drop database if exists `" . $project . "`; create database `" . $project . "`;\"");
 			shell_exec("\"" . (isset($config->mysql->mysql) ? ($config->mysql->mysql) : ("mysql")) . "\" -h " . $config->mysql->host . " --port " . $config->mysql->port . " -u " . $config->mysql->username . " -p\"" . $config->mysql->password . "\" " . $project . " --default-character-set=utf8 < \"" . $config->target . "/" . $project . ".mysql" . "\"");
 			unlink($config->target . "/" . $project . ".mysql");
 		}
