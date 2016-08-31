@@ -7,6 +7,32 @@ class SyncMAMP
 
 		$config = json_decode(file_get_contents('config.json'));
 
+		if ($project !== null && $project != "" && $project == "all") {
+
+			// delete all empty folders
+			$directories = glob($config->source . '/*' , GLOB_ONLYDIR);
+			foreach($directories as $dir)
+			{
+				$count = 0;
+				self::countFiles($dir, $count);
+				if($count === 0)
+				{
+					chdir($config->source);
+					shell_exec("rm -rf " . $dir);
+				}
+			}
+
+			// for all others: close em
+			$directories = glob($config->source . '/*' , GLOB_ONLYDIR);
+			foreach($directories as $dir)
+			{
+				$project = substr($dir, strrpos($dir,"/")+1);
+				self::close($project);
+			}
+			
+			return true;
+		}
+
 		if ($project === null || $project == "" || !is_dir($config->source . "/" . $project))
 		{
 			die('folder missing');
@@ -35,6 +61,9 @@ class SyncMAMP
 
 		chdir($config->source);
 		shell_exec("rm -rf " . $config->source . "/" . $project);
+		chdir(realpath(dirname(__FILE__)));
+
+		return true;
 
 	}
 
@@ -69,7 +98,28 @@ class SyncMAMP
 		}
 
 		unlink($config->target . "/" . $project . ".zip");
+
+		return true;
 	}
+
+	public static function countFiles($dir, &$count)
+	{
+		if (is_dir($dir)) {
+			$objects = scandir($dir);
+			foreach ($objects as $object) {
+				if ($object != "." && $object != "..") {
+					if (filetype($dir."/".$object) == "dir") {
+						self::countFiles($dir."/".$object, $count); 
+					}
+					else {
+						$count++;
+					}
+				}
+			}
+			reset($objects);
+		}
+	}
+
 }
 
 // usage from command line
@@ -93,3 +143,10 @@ if ($argv[1] == "open")
 {
 	SyncMAMP::open($argv[2]);
 }
+
+// example usage
+/*
+syncmamp open project
+syncmamp close project
+syncmamp close all
+*/
