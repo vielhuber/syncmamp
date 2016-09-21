@@ -21,6 +21,7 @@ class SyncMAMP
 					shell_exec("rm -rf " . $dir);
 				}
 			}
+			chdir(realpath(dirname(__FILE__)));
 
 			// for all others: close em
 			$directories = glob($config->source . '/*' , GLOB_ONLYDIR);
