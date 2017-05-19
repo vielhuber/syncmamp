@@ -86,15 +86,15 @@ class SyncMAMP
 		shell_exec("unzip \"" . $config->target . "/" . $project . ".zip\" -d " . $config->source . "/" . $project . "/");
 		if (file_exists($config->target . "/" . $project . ".mysql"))
 		{
-			shell_exec("\"" . (isset($config->mysql->mysql) ? ($config->mysql->mysql) : ("mysql")) . "\" -h " . $config->mysql->host . " --port " . $config->mysql->port . " -u " . $config->mysql->username . " -p\"" . $config->mysql->password . "\" -e \"drop database if exists `" . $project . "`; create database `" . $project . "`;\"");
-			shell_exec("\"" . (isset($config->mysql->mysql) ? ($config->mysql->mysql) : ("mysql")) . "\" -h " . $config->mysql->host . " --port " . $config->mysql->port . " -u " . $config->mysql->username . " -p\"" . $config->mysql->password . "\" " . $project . " --default-character-set=utf8 < \"" . $config->target . "/" . $project . ".mysql" . "\"");
+			shell_exec("\"" . (isset($config->mysql->mysql) ? ($config->mysql->mysql) : ("mysql")) . "\" -h " . $config->mysql->host . " --port " . $config->mysql->port . " -u " . $config->mysql->username . " -p\"" . $config->mysql->password . "\" -e \"drop database if exists `" . $project . "`; create database `" . $project . "`;\" >nul 2>&1");
+			shell_exec("\"" . (isset($config->mysql->mysql) ? ($config->mysql->mysql) : ("mysql")) . "\" -h " . $config->mysql->host . " --port " . $config->mysql->port . " -u " . $config->mysql->username . " -p\"" . $config->mysql->password . "\" " . $project . " --default-character-set=utf8 < \"" . $config->target . "/" . $project . ".mysql" . "\" >nul 2>&1");
 			unlink($config->target . "/" . $project . ".mysql");
 		}
 
 		if (file_exists($config->target . "/" . $project . ".pgsql"))
 		{
-			shell_exec("SET PGPASSWORD=" . $config->pgsql->password . "&& \"" . (isset($config->pgsql->psql) ? ($config->pgsql->psql) : ("psql")) . "\" -U " . $config->pgsql->username . " -d " . $project . " -c \"drop schema public cascade; create schema public;\"");
-			shell_exec("SET PGPASSWORD=" . $config->pgsql->password . "&& \"" . (isset($config->pgsql->psql) ? ($config->pgsql->psql) : ("psql")) . "\" -U " . $config->pgsql->username . " -d " . $project . " -1 -f \"" . $config->target . "/" . $project . ".pgsql\"");
+			shell_exec("SET PGPASSWORD=" . $config->pgsql->password . "&& \"" . (isset($config->pgsql->psql) ? ($config->pgsql->psql) : ("psql")) . "\" -U " . $config->pgsql->username . " -d " . $project . " -c \"drop schema public cascade; create schema public;\" >nul 2>&1");
+			shell_exec("SET PGPASSWORD=" . $config->pgsql->password . "&& \"" . (isset($config->pgsql->psql) ? ($config->pgsql->psql) : ("psql")) . "\" -U " . $config->pgsql->username . " -d " . $project . " -1 -f \"" . $config->target . "/" . $project . ".pgsql\" >nul 2>&1");
 			unlink($config->target . "/" . $project . ".pgsql");
 		}
 
@@ -109,7 +109,7 @@ class SyncMAMP
 			$objects = scandir($dir);
 			foreach ($objects as $object) {
 				if ($object != "." && $object != "..") {
-					if (filetype($dir."/".$object) == "dir") {
+					if (@filetype($dir."/".$object) == "dir") {
 						self::countFiles($dir."/".$object, $count); 
 					}
 					else {

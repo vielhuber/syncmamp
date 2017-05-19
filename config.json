@@ -1,6 +1,6 @@
 {
 	"source": "C:\\MAMP\\htdocs",
-	"target": "Z:\\Meine Seiten",
+	"target": "Z:\\WEB",
 	"mysql": {
 		"host": "localhost",
 		"port": "3306",
