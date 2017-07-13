@@ -106,7 +106,7 @@ class SyncMAMP
 	public static function countFiles($dir, &$count)
 	{
 		if (is_dir($dir)) {
-			$objects = scandir($dir);
+			$objects = @scandir($dir);
 			foreach ($objects as $object) {
 				if ($object != "." && $object != "..") {
 					if (@filetype($dir."/".$object) == "dir") {
