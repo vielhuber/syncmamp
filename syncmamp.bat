@@ -10,3 +10,6 @@ IF "%1" == "open" (
 ) ELSE (
 	chdir /d %OLDDIR%
 )
+IF EXIST C:\MAMP\htdocs\%2\.git (
+	git status
+)
