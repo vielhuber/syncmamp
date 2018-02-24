@@ -1,6 +1,6 @@
 {
 	"source": "C:\\MAMP\\htdocs",
-	"target": "Z:\\WEB",
+	"target": "C:\\Users\\David\\OneDrive\\WEB",
 	"mysql": {
 		"host": "localhost",
 		"port": "3306",
@@ -14,7 +14,7 @@
 		"port": "5432",
 		"username": "postgres",
 		"password": "root",
-		"pg_dump": "C:\\Program Files\\PostgreSQL\\9.4\\bin\\pg_dump.exe",
-		"psql": "C:\\Program Files\\PostgreSQL\\9.4\\bin\\psql.exe"
+		"pg_dump": "C:\\Program Files\\PostgreSQL\\10\\bin\\pg_dump.exe",
+		"psql": "C:\\Program Files\\PostgreSQL\\10\\bin\\psql.exe"
 	}
 }
